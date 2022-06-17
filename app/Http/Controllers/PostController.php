@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\PostCreatedEvent;
 use App\Http\Requests\CreatePostRequest;
+use App\Jobs\NewPostNotificationJob;
 use App\Models\Post;
-use App\Models\Website;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the posts.
      *
      * @return JsonResponse
      */
@@ -22,7 +21,7 @@ class PostController extends Controller
     }
 
     /**
-     * No input form
+     * This method not in use
      *
      */
     public function create()
@@ -31,7 +30,7 @@ class PostController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created post.
      *
      * @param CreatePostRequest $request
      * @return JsonResponse
@@ -39,9 +38,8 @@ class PostController extends Controller
     public function store(CreatePostRequest $request)
     {
         $newPost = Post::create($request->validated());
-        if($newPost) {
-            $subscribers = Website::with('users')->where('id', $request->website_id)->first();
-//            event(new PostCreatedEvent($subscribers->users));
+        if ($newPost) {
+            dispatch(new NewPostNotificationJob($newPost));
             return ApiResponse(true, 'New Post created successfully.', $newPost);
         } else {
             return ApiResponse(false, 'Unable to create post right now!', [], 500);
@@ -49,7 +47,7 @@ class PostController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * This method not in use
      *
      * @param int $id
      * @return \Illuminate\Http\Response
@@ -60,7 +58,7 @@ class PostController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * This method not in use
      *
      * @param int $id
      * @return \Illuminate\Http\Response
@@ -71,7 +69,7 @@ class PostController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * This method not in use
      *
      * @param Request $request
      * @param int $id
@@ -83,7 +81,7 @@ class PostController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * This method not in use
      *
      * @param int $id
      * @return \Illuminate\Http\Response

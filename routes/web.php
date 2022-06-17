@@ -13,3 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/logs', [\App\Http\Controllers\SystemLogsController::class, 'showLogs']);

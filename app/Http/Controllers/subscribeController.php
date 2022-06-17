@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubscriptionRequest;
 use App\Models\User;
 use App\Models\Website;
 use Illuminate\Http\Request;
 
 class subscribeController extends Controller
 {
-    public function subscribeAWebsite(Request $request)
+    public function subscribeAWebsite(SubscriptionRequest $request)
     {
         $website = Website::find($request->website_id);
         $website->users()->attach($request->user_id);
