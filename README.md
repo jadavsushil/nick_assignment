@@ -14,7 +14,7 @@ update database connection
 update mail crenditials
 update "QUEUE_CONNECTION" sync to database
 ```
-- `After done .env changes run composer install`
+
 - `After .env update fire folowing commands`
   - `composer install`
   - `php artisan project:setup`
